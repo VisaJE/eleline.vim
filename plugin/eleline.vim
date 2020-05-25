@@ -249,10 +249,10 @@ function! s:StatusLine() abort
       let l:lsp = '%{ElelineNvimLsp()}'
       let l:vista = ''
   endif
-  let l:prefix = l:bufnr_winnr.l:paste
+  let l:prefix = l:bufnr_winnr.l:paste.'%m'
   let l:common = l:curfname.l:branch.l:status.l:error.l:warning.l:tags.l:lcn.l:coc.l:lsp.l:vista
   if get(g:, 'eleline_slim', 0)
-    return l:prefix.'%<'.l:common
+    return l:prefix.'%<'.l:common.'%='.g:ardustat.l:m_r_f
   endif
   let l:tot = s:def('ElelineTotalBuf')
   let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
