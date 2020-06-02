@@ -23,12 +23,7 @@ let s:git_branch_star_substituted = s:font ? "  \ue0a0" : '  Git:'
 let s:jobs = {}
 
 function! ElelineBufnrWinnr() abort
-  let l:bufnr = bufnr('%')
-  if !s:gui
-    " transform to circled num: nr2char(9311 + l:bufnr)
-    let l:bufnr = l:bufnr > 20 ? l:bufnr : nr2char(9311 + l:bufnr).' '
-  endif
-  return '  '.l:bufnr.' ❖ '.winnr().' '
+  return '  ❖ '.winnr().' '
 endfunction
 
 function! ElelineTotalBuf() abort
@@ -250,10 +245,12 @@ function! s:StatusLine() abort
       let l:vista = ''
   endif
   let l:prefix = l:bufnr_winnr.l:paste.'%m'
-  let l:common = l:curfname.l:branch.l:status.l:error.l:warning.l:tags.l:lcn.l:coc.l:lsp.l:vista
+  let l:common = l:curfname.l:branch.l:status.l:error.l:warning.l:tags.l:lcn.l:coc.l:vista
+  let l:m_r_f = '%#Eleline7# %r%y %*'
   if get(g:, 'eleline_slim', 0)
     return l:prefix.'%<'.l:common.'%='.g:ardustat.l:m_r_f
   endif
+  return l:prefix.l:common.'%<'.'%m'.l:status.l:error.l:warning.l:tags.l:lcn.l:coc.l:vista.'%='.g:ardustat.l:m_r_f
   let l:tot = s:def('ElelineTotalBuf')
   let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
   let l:m_r_f = '%#Eleline7# %m%r%y %*'
@@ -261,8 +258,6 @@ function! s:StatusLine() abort
   let l:enc = ' %{&fenc != "" ? &fenc : &enc} | %{&bomb ? ",BOM " : ""}'
   let l:ff = '%{&ff} %*'
   let l:pct = '%#Eleline9# %P %*'
-  return l:prefix.l:tot.'%<'.l:fsize.l:common
-        \ .'%='.l:m_r_f.l:pos.l:enc.l:ff.l:pct
 endfunction
 
 let s:colors = {
@@ -331,12 +326,13 @@ function! s:hi(group, dark, light, ...) abort
 endfunction
 
 function! s:hi_statusline() abort
-  call s:hi('ElelineBufnrWinnr' , [232 , 178]    , [89 , '']  )
+  call s:hi('ElelineBufnrWinnr' , [232 , 178]    , [232 , 178]    , 'bold')
+
   call s:hi('ElelineTotalBuf'   , [178 , s:bg+8] , [240 , ''] )
-  call s:hi('ElelinePaste'      , [232 , 178]    , [232 , 178]    , 'bold')
+  call s:hi('ElelineCurFname'      , [232 , 178]    , [232 , 178]    , 'bold')
   call s:hi('ElelineFsize'      , [250 , s:bg+6] , [235 , ''] )
-  call s:hi('ElelineCurFname'   , [171 , s:bg+4] , [171 , '']     , 'bold' )
-  call s:hi('ElelineGitBranch'  , [184 , s:bg+2] , [89  , '']     , 'bold' )
+  call s:hi('ElelinePaste'   , [184 , s:bg+2] , [171 , '']     , 'bold' )
+  call s:hi('ElelineGitBranch'  , [171 , s:bg+4] , [89  , '']     , 'bold' )
   call s:hi('ElelineGitStatus'  , [208 , s:bg+2] , [89  , ''])
   call s:hi('ElelineError'      , [197 , s:bg+2] , [197 , ''])
   call s:hi('ElelineWarning'    , [214 , s:bg+2] , [214 , ''])
