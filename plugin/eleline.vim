@@ -365,7 +365,7 @@ endfunction
 " Note that the "%!" expression is evaluated in the context of the
 " current window and buffer, while %{} items are evaluated in the
 " context of the window that the statusline belongs to.
-function! s:SetStatusLine(...) abort
+function! SetStatusLine(...) abort
   call ElelineGitBranch(1)
   let &l:statusline = s:StatusLine()
   " User-defined highlightings shoule be put after colorscheme command.
@@ -373,20 +373,20 @@ function! s:SetStatusLine(...) abort
 endfunction
 
 if exists('*timer_start')
-  call timer_start(100, function('s:SetStatusLine'))
+  call timer_start(100, function('SetStatusLine'))
 else
-  call s:SetStatusLine()
+  call SetStatusLine()
 endif
 
 augroup eleline
   autocmd!
-  autocmd User GitGutter,Startified,LanguageClientStarted call s:SetStatusLine()
+  autocmd User GitGutter,Startified,LanguageClientStarted call SetStatusLine()
   " Change colors for insert mode
   autocmd InsertLeave * call s:hi('ElelineBufnrWinnr', [232, 178], [89, ''])
   autocmd InsertEnter,InsertChange * call s:InsertStatuslineColor(v:insertmode)
-  autocmd BufWinEnter,ShellCmdPost,BufWritePost * call s:SetStatusLine()
-  autocmd FileChangedShellPost,ColorScheme * call s:SetStatusLine()
-  autocmd FileReadPre,ShellCmdPost,FileWritePost * call s:SetStatusLine()
+  autocmd BufWinEnter,ShellCmdPost,BufWritePost * call SetStatusLine()
+  autocmd FileChangedShellPost,ColorScheme * call SetStatusLine()
+  autocmd FileReadPre,ShellCmdPost,FileWritePost * call SetStatusLine()
   autocmd FileType qf call s:qf()
 augroup END
 
