@@ -23,7 +23,11 @@ let s:git_branch_star_substituted = s:font ? "  \ue0a0" : '  Git:'
 let s:jobs = {}
 
 function! ElelineBufnrWinnr() abort
-  return '  ❖ '.winnr().' '
+  if zoom#statusline() == ''
+    return '  ❖ '.zoom#statusline().' '.winnr().' '
+  else
+    return '  '.zoom#statusline().' '.winnr().' '
+  endif
 endfunction
 
 function! ElelineTotalBuf() abort
