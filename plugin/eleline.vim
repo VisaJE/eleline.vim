@@ -251,6 +251,9 @@ function! s:StatusLine() abort
   let l:prefix = l:bufnr_winnr.l:paste.'%m'
   let l:common = l:curfname.l:branch.l:status.l:error.l:warning.l:tags.l:lcn.l:coc.l:vista
   let l:m_r_f = '%#Eleline7# %r%y %*'
+  if !exists('g:ardustat')
+      let g:ardustat = ''
+  endif
   if get(g:, 'eleline_slim', 0)
     return l:prefix.'%<'.l:common.'%='.g:ardustat.l:m_r_f
   endif
